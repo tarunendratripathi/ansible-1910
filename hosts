@@ -1,0 +1,13 @@
+[linux]
+
+10.0.0.4 ansible_ssh_user=ansible
+
+10.0.0.6 ansible_ssh_user=ansible
+
+[ubuntu]
+
+10.0.0.6 ansible_ssh_user=ansible
+
+[centos]
+
+10.0.0.4 ansible_ssh_user=ansible

@@ -1,0 +1,51 @@
+---
+
+- hosts: centos
+
+  tasks:
+
+  - name: Run task 1
+
+    command: sleep 10
+
+    async: 30
+
+    poll: 0
+
+    register: async_task_result
+
+
+  - name: Task 2
+
+    debug:
+
+      msg: "Running Task 2"
+
+
+  - name: Task 3 
+
+    debug:
+
+      msg: "Running Task 3"
+
+
+  - name: Task 4 - wait for task 1 to complete
+
+    async_status:
+
+      jid: "{{ async_task_result.ansible_job_id }}"
+
+    register: job_result
+
+    until: job_result.finished
+
+    retries: 10
+
+    delay: 2
+
+
+  - name: Task 5
+
+    debug:
+
+      msg: "Running task 5"

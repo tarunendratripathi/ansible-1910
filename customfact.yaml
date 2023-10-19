@@ -1,0 +1,39 @@
+---
+
+- hosts: linux
+
+  become: yes
+
+  tasks:
+
+  - name: create fact directrory
+
+    file:
+
+      path: /etc/ansible/facts.d
+
+      recurse: yes
+
+      state: directory
+
+  - name: copy the fact script to node
+
+    copy:
+
+      src: /etc/ansible/playbook/datetime.sh 
+
+      dest: /etc/ansible/facts.d/date_time.fact
+
+      mode: 0755
+
+  - name: reload the fact
+
+    setup:
+
+      filter: ansible_local
+
+  - name: print the custom fact
+
+    debug:
+
+      msg: " custom fact is {{ ansible_local.date_time }}"

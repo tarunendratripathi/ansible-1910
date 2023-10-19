@@ -1,0 +1,7 @@
+---
+- hosts: win
+  tasks:
+  - name: create training file
+    win_file:
+      path: c:\training\testfile.txt
+      state: touch

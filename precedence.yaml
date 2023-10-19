@@ -1,0 +1,15 @@
+---
+
+- hosts: centos
+
+  vars:
+
+    value: playbook
+
+  tasks:
+
+  - name: print value variable
+
+    debug:
+
+      msg: "value for value variable is {{ value }}" 

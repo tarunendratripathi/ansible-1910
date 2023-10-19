@@ -1,0 +1,78 @@
+--- 
+
+- hosts: centos
+
+  become: yes
+
+  tasks:
+
+  - name: Install NTP service
+
+    yum:
+
+      name: ntp
+
+      state: present
+
+  - name: Start NTP Service
+
+    service:
+
+      name: ntpd
+
+      state: started
+
+  - name: Configure NTP Service
+
+    block:
+
+      - name: Set NTP configuration file
+
+        template:
+
+           src: /etc/ansible/playbook/ntp.conf.j2
+
+           dest: /etc/ntp.conf
+
+
+      - name: Enable NTP Service
+
+        service:
+
+          name: ntpd
+
+          enabled: yes
+
+    rescue:
+
+    - name: removing ntp configuration
+
+      file:
+
+        path: /etc/ntp.conf
+
+        state: absent
+
+    - name: uninstalling ntp 
+
+      yum:
+
+        name: ntp
+
+        state: absent
+
+    - name: Manage faliures on Configure NTP Service
+
+      debug:
+
+        msg: "Failled to configure NTP service so roll backed the changes"
+
+
+    always:
+
+    - name: NTP SErvice configuraion message
+
+      debug:
+
+        msg: "NTP Service configured sucessfully"
+

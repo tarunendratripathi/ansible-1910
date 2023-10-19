@@ -1,0 +1,38 @@
+---
+
+- hosts: linux
+
+#  strategy: free
+  serial: 1
+  tasks:
+
+  - name: task 1
+
+    shell:
+
+      cmd: "sleep 10 && uptime"
+
+    register: result1
+
+
+  - name: task 1 output
+
+    debug:
+
+      msg : "Task 1 out put is {{ result1.stdout }}"
+
+
+  - name: task 2
+
+    shell:
+
+      cmd: "sleep 5 && w "
+
+    register: result2
+
+
+  - name: task2 result
+
+    debug:
+
+      msg: " Task 2 out put is {{ result2.stdout }}"

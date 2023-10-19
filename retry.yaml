@@ -1,0 +1,23 @@
+---
+
+- hosts: linux
+
+  tasks:
+
+  - name: Wait for the file to be avaliable
+
+    file:
+
+      path: /tmp/lockfile
+
+      state: file
+
+    register: fileexists
+
+    until: fileexists is not failed
+
+    retries: 5
+
+    delay: 10
+
+    ignore_errors: true

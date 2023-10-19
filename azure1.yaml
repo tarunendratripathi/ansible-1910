@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+  - name: create a resoruce group
+    azure.azcollection.azure_rm_resourcegroup:
+      name: trainer_1
+      location: East US

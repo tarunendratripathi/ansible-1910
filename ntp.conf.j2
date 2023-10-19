@@ -1,0 +1,45 @@
+ /etc/ntp.conf
+
+
+# Global NTP configuration
+
+server 0.in.pool.ntp.org iburst
+
+server 1.in.pool.ntp.org iburst
+
+server 2.in.pool.ntp.org iburst
+
+
+# Restrict NTP access
+
+restrict default kod nomodify notrap nopeer noquery
+
+restrict 127.0.0.1
+
+restrict -6 ::1
+
+
+# Drift file
+
+driftfile /var/lib/ntp/ntp.drift
+
+
+# Log file
+
+logfile /var/log/ntp.log
+
+
+# Authentication
+
+keys /etc/ntp/keys
+
+trustedkey 1
+
+requestkey 1
+
+controlkey 1
+
+
+# Miscellaneous settings
+
+broadcastclient

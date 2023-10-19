@@ -1,0 +1,9 @@
+---
+
+- hosts: centos
+
+  become: yes
+
+  roles:
+
+  - webserver

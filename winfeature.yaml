@@ -1,0 +1,16 @@
+---
+- hosts: win
+  tasks:
+  - name: Install IIS
+    win_feature:
+      name: Web-Server
+      state: present
+  - name: start IIS
+    win_service:
+      name: W3SVC
+      state: started
+      start_mode: auto
+  - name: copy Index html
+    template:
+      src: /etc/ansible/playbook/index.html.j2
+      dest: C:/inetpub\wwwroot\index.html

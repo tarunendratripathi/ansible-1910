@@ -1,0 +1,77 @@
+---
+
+- hosts: centos
+
+  become: yes
+
+  tasks:
+
+  - name: install mariadb server
+
+    yum:
+
+      name: mariadb-server
+
+      state: latest
+
+    tags:
+
+    - install
+
+    - setup
+
+    - full
+
+  - name: start the mariadb service
+
+    service:
+
+      name: mariadb
+
+      state: started
+
+    tags:
+
+    - start
+
+    - setup
+
+    - full
+
+  - name: restart mariadb server
+
+    service:
+
+      name: mariadb
+
+      state: restarted
+
+    tags:
+
+    - restart
+
+  - name: stop mariadb server
+
+    service:
+
+      name: mariadb
+
+      state: stopped
+
+    tags:
+
+    - stop
+
+  - name: create  mariadb user
+
+    user:
+
+      name: mariadbuser
+
+      state: present
+
+    tags:
+
+    - user
+
+    - full

@@ -1,0 +1,13 @@
+---
+
+- hosts: localhost
+
+  tasks:
+
+  - name: delete resource group
+
+    azure_rm_resourcegroup:
+
+      name: user15
+      force_delete_nonempty: yes
+      state: absent

@@ -1,0 +1,21 @@
+---
+- hosts: linux
+  become: yes
+  tasks:
+  - name: create users
+    user:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - testuser1
+    - testuser2
+    - testuser3
+  - name: copy template files
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_items:
+    - src: /etc/ansible/playbook/test1.txt.j2
+      dest: /home/ansible/test1.txt
+    - src: /etc/ansible/playbook/test2.txt.j2
+      dest: /home/ansible/test2.txt

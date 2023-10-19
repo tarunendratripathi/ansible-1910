@@ -1,0 +1,52 @@
+--- 
+
+- hosts: centos
+
+  become: yes
+
+  tasks:
+
+  - name: Install NTP service
+
+    yum:
+
+      name: ntp
+
+      state: present
+
+  - name: Start NTP Service
+
+    service:
+
+      name: ntpd
+
+      state: started
+
+  - name: Configure NTP Service
+
+    block:
+
+      - name: Set NTP configuration file
+
+        template:
+
+           src: /etc/ansible/playbook/ntp.conf.j2
+
+           dest: /etc/ntp.conf
+
+
+      - name: Enable NTP Service
+
+        service:
+
+          name: ntp
+
+          enabled: yes
+
+    rescue:
+
+    - name: Manage faliures on Configure NTP Service
+
+      debug:
+
+        msg: "Failled to configure NTP service"

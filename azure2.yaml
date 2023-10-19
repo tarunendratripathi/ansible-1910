@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  tasks:
+  - name: create a resoruce group
+    azure.azcollection.azure_rm_resourcegroup:
+      name: user15
+      location: East US
+      register: rg
+  - name: Create virtual network
+    azure_rm_virtualnetwork:
+      name: user15vnet
+      resource_group: "{{ rg.name }}"
+      address_prefixes: ["10.0.0.0/16"]
+    register: vnet
+  - name: Create subnet
+    azure_rm_subnet:
+      name: user15subnet
+      resource_group: "{{ rg.name }}"
+      virtual_network_name: "{{ vnet.name }}"
+      address_prefixes: "10.0.0.0/24"
+  - name: Create Public IP address
+    azure_rm_publicipaddress:
+      name: user15publicip
+      resource_group: "{{ rg.name }}"
+      allocation_method: Dynamic
+  - name: Create network interface
+    azure_rm_networkinterface:
+      name: user15nic
+      resource_group: "{{ rg.name }}"
+      location: East Us
+      virtual_network_name: "{{ vnet.name }}"
+  - name: Create a network security group
+    azure_rm_securitygroup:
+      name: user15nsg
+      resoruce_group: "{{ rg.name }}"
+      rules:
+        - name: SSH
+          access: Allow
+          direction: Inbound
+          priority: 100
+          protocal: Tcp
+          source_port_range: "*"
+          source_address_prefix: "*"
+          destination_port_range: 22
+          destination_address_prefix: "*"
+  - name: Create virtual machine
+    azure_rm_virtualmachine:
+      name: user15vm
+      resource_group: "{{ rg.name }}"
+      location: East US
+      size: Standard_D2s_v3
+      admin_username: user15
+      admin_password: user15P@ssw0rd15
+      image:
+        offer: UbuntuServer
+        publisher: canonical
+      netowrk_interface_ids: "{{ vnet.name }}/user15subnet/user15nic"
+      os_disk:
+        name: user15osdisk
+        create_option: FromImage
+      tags:
+        environment: user15

@@ -1,0 +1,11 @@
+---
+- hosts: linux
+  tasks:
+  - name: Create training file
+    file:
+      path: /home/ansible/training
+      state: touch
+  - name: create training directory
+    file:
+      path: /home/ansible/trainingdir
+      state: directory
